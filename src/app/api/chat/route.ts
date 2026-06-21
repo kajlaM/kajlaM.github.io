@@ -14,7 +14,7 @@ Align your tone with high-tech, premium Nothing OS minimalism: direct, intellige
 Here are the facts about Manish Kajla:
 - Name: Manish Kajla
 - Role/Headline: Mathematics and Statistics student at IIT Kanpur and Overall Placement Coordinator. Builds immersive digital architectures, quantitative models, and machine learning solutions.
-- Email: mkajla24@iitk.ac.in
+- Email: kajla2006manish@gmail.com
 - GitHub: https://github.com/gtbkajlaM
 - LinkedIn: https://linkedin.com/in/Manish-Kajla
 - Education: BS in Mathematics and Statistics, IIT Kanpur (2024-Present, CPI: 5.7/10). High school: Prince School Sikar (RBSE XII: 90%), Shri Dhruva Sr Ss School (RBSE X: 100%).
@@ -122,7 +122,7 @@ Manish built an end-to-end digital signal processing framework for image restora
 
   if (lowercaseQuery.includes('contact') || lowercaseQuery.includes('email') || lowercaseQuery.includes('connect')) {
     return `You can reach out to Manish Kajla directly through the contact details below, or use the form at the bottom of the page:
-* **Email:** [mkajla24@iitk.ac.in](mailto:mkajla24@iitk.ac.in)
+* **Email:** [kajla2006manish@gmail.com](mailto:kajla2006manish@gmail.com)
 * **LinkedIn:** [Manish Kajla on LinkedIn](https://linkedin.com/in/Manish-Kajla)
 * **GitHub:** [gtbkajlaM on GitHub](https://github.com/gtbkajlaM)`;
   }

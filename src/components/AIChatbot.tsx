@@ -13,7 +13,7 @@ export default function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'model',
-      text: "Hello. I am Manish's personal AI assistant. I am trained on his resume and projects, including his Fraud Detection System and custom price-prediction engine. Feel free to ask me about his work in Machine Learning, Quantitative Finance, or his role coordinating placements at SPO IIT Kanpur.",
+      text: "Think of me as an interactive version of Manish’s portfolio. You can ask me about machine learning, robotics, mathematics, software engineering, campus leadership, or the ideas that shape how he thinks and builds.",
       id: 'welcome',
     },
   ]);
@@ -68,7 +68,7 @@ export default function AIChatbot() {
       });
 
       const data = await res.json();
-      
+
       setMessages((prev) => [
         ...prev,
         {
@@ -95,8 +95,8 @@ export default function AIChatbot() {
   return (
     <div className="w-full max-w-[800px] mx-auto h-[600px] flex flex-col justify-between glass-panel rounded-2xl overflow-hidden border border-border relative z-10">
       {/* Pulse Ambient Glow Background */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-20 bg-[radial-gradient(circle_at_center,rgba(68,68,68,0.2)_0%,transparent_70%)] animate-pulse" 
+      <div
+        className="absolute inset-0 z-0 pointer-events-none opacity-20 bg-[radial-gradient(circle_at_center,rgba(68,68,68,0.2)_0%,transparent_70%)] animate-pulse"
         style={{ animationDuration: '4s' }}
       />
 
@@ -107,14 +107,14 @@ export default function AIChatbot() {
       </div>
 
       {/* Messages Thread */}
-      <div 
+      <div
         ref={containerRef}
         className="flex-1 overflow-y-auto px-6 py-6 space-y-6 relative z-10 scrollbar-none"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {messages.map((msg) => (
-          <div 
-            key={msg.id} 
+          <div
+            key={msg.id}
             className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {msg.role !== 'user' && (
@@ -122,13 +122,12 @@ export default function AIChatbot() {
                 <Bot className="w-4 h-4 text-zinc-300" />
               </div>
             )}
-            
-            <div 
-              className={`max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed border ${
-                msg.role === 'user' 
-                  ? 'bg-zinc-100 text-black border-zinc-200 shadow-sm' 
-                  : 'bg-[#1F2023] text-zinc-200 border-border/80 shadow-[0_4px_12px_rgba(0,0,0,0.15)]'
-              }`}
+
+            <div
+              className={`max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed border ${msg.role === 'user'
+                ? 'bg-zinc-100 text-black border-zinc-200 shadow-sm'
+                : 'bg-[#1F2023] text-zinc-200 border-border/80 shadow-[0_4px_12px_rgba(0,0,0,0.15)]'
+                }`}
             >
               {/* Formatted Markdown Parser Mock */}
               <div className="space-y-2">
@@ -199,7 +198,7 @@ export default function AIChatbot() {
         )}
 
         {/* Input box */}
-        <form 
+        <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSendMessage(input);

@@ -14,8 +14,66 @@ import {
   FileText
 } from 'lucide-react';
 import AIChatbot from '@/components/AIChatbot';
+import { RadialScrollGallery } from '@/components/ui/portfolio-and-image-gallery';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose
+} from '@/components/ui/dialog';
+import { X } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const projectsData = [
+  {
+    title: "Samsung Smartphone Market Repositioning",
+    context: "Course Project MBA631 | Prof. Amit Shukla | (June'25 - July'25)",
+    objective: "Reassess Samsung's smartphone market positioning and identify opportunities to strengthen consumer relevance and emotional differentiation.",
+    approach: [
+      "Conducted comprehensive market and competitive analysis of Samsung smartphones across product portfolio, pricing, distribution, and promotions.",
+      "Executed primary consumer research (60+ survey responses) to diagnose perception gaps between spec-led messaging and lifestyle expectations.",
+      "Synthesized insights to design a repositioning strategy focused on usability, design, trust, and everyday relevance.",
+      "Translated strategy into execution by conceptualizing and producing a consumer-facing advertisement aligned with the new positioning."
+    ],
+    impact: "Reframed Samsung smartphones from a spec-centric offering to a lifestyle-driven, emotionally resonant brand proposition."
+  },
+  {
+    title: "GNN-Based Fraud Detection System",
+    context: "Electrical Engineering Association IITK | (Dec'25 - March'26)",
+    objective: "Learn and apply Machine Learning (ML), Artificial Neural Networks (ANNs), and Graph Neural Networks (GNNs) to detect illicit transactions using relational patterns in financial networks.",
+    approach: [
+      "Modeled transactions as a graph (nodes: transactions, edges: flows) to capture multi-hop dependencies.",
+      "Implemented GCN, GraphSAGE, and GAT for semi-supervised node classification on a 200K+ node dataset.",
+      "Addressed class imbalance using Focal Loss and compared performance with an XGBoost baseline."
+    ],
+    impact: "Achieved Macro F1 ≈ 0.92 and PR-AUC ≈ 0.92, enabling interpretable fraud detection via GNNExplainer."
+  },
+  {
+    title: "Signals to Software",
+    context: "Course project EE200 | Prof. Tushar Sandhan | (June'26 - July'26)",
+    objective: "Developed an end-to-end signal processing framework for image restoration, ECG arrhythmia detection, and audio fingerprinting using frequency-domain and time-frequency analysis.",
+    approach: [
+      "Applied Fourier Transform, STFT, notch filtering, and Sobel edge detection for image enhancement and feature extraction.",
+      "Implemented beat-wise ECG arrhythmia detection using normalized correlation and spectrogram-based analysis.",
+      "Built and deployed a Shazam-inspired audio fingerprinting system using spectrogram peak detection, hash generation, and offset-based matching."
+    ],
+    impact: "Achieved robust multimedia and biomedical signal recognition through scalable DSP pipelines and an interactive Streamlit application."
+  },
+  {
+    title: "DocuMind – AI Document RAG Platform",
+    context: "Association of Computer activities (ACA) IITK | (June'26 - Ongoing)",
+    objective: "Built an enterprise-grade Retrieval-Augmented Generation (RAG) platform enabling secure, real-time conversational search and knowledge extraction from large document repositories.",
+    approach: [
+      "Developed a full-stack RAG architecture using Next.js, FastAPI, PostgreSQL, and pgvector.",
+      "Implemented hybrid retrieval combining vector embeddings and BM25 for accurate search.",
+      "Implemented SSE-based response streaming, Google OAuth authentication, JWT authorization, and tenant-level data isolation for secure multi-user deployment."
+    ],
+    impact: "Enables accurate, secure, and scalable document intelligence by reducing information retrieval time and delivering context-aware answers from large unstructured knowledge bases."
+  }
+];
 
 export default function Home() {
   const [preloaderActive, setPreloaderActive] = useState(true);
@@ -37,6 +95,7 @@ export default function Home() {
     message: ''
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success'>('idle');
+  const [selectedProject, setSelectedProject] = useState<any>(null);
 
   // Refs for elements and sections
   const preloaderRef = useRef<HTMLDivElement>(null);
@@ -46,7 +105,6 @@ export default function Home() {
   const portfolioTextRef = useRef<HTMLHeadingElement>(null);
   const aboutProfileCardRef = useRef<HTMLDivElement>(null);
   const aboutPhilosophyRef = useRef<HTMLDivElement>(null);
-  const projectsTrackRef = useRef<HTMLDivElement>(null);
   const skillsOrbRef = useRef<HTMLDivElement>(null);
   const skillsOrbBgRef = useRef<HTMLDivElement>(null);
   const skillCardsRef = useRef<HTMLDivElement>(null);
@@ -73,6 +131,7 @@ export default function Home() {
         if (lenis) {
           lenis.start();
         }
+        ScrollTrigger.sort();
         ScrollTrigger.refresh();
       }
     });
@@ -124,7 +183,7 @@ export default function Home() {
         trigger: '#hero',
         start: 'top top',
         end: '+=150%',
-        scrub: true,
+        scrub: 2,
         pin: true,
       }
     });
@@ -162,7 +221,7 @@ export default function Home() {
         trigger: '#about',
         start: 'top top',
         end: '+=150%',
-        scrub: true,
+        scrub: 2,
         pin: true,
       }
     });
@@ -198,38 +257,7 @@ export default function Home() {
         }, '<');
     }
 
-    // Projects Section Pinning (Horizontal Scroll)
-    const track = projectsTrackRef.current;
-    if (track) {
-      const getScrollAmount = () => {
-        const trackWidth = track.scrollWidth;
-        return -(trackWidth - window.innerWidth + (window.innerWidth * 0.16));
-      };
-
-      const projectsTL = gsap.timeline({
-        scrollTrigger: {
-          trigger: '#projects',
-          start: 'top top',
-          end: () => `+=${track.scrollWidth - window.innerWidth + window.innerHeight}`,
-          scrub: true,
-          pin: true,
-          invalidateOnRefresh: true,
-        }
-      });
-
-      projectsTL
-        .to(track, {
-          x: getScrollAmount,
-          ease: 'none'
-        })
-        .to('.project-card', {
-          opacity: 0,
-          scale: 0.93,
-          stagger: 0.05,
-          duration: 0.8,
-          ease: 'power2.in'
-        });
-    }
+    // Projects section has its own internal ScrollTrigger pinning, no custom page timeline needed
 
     // Skills Section Pinning
     const skillsTL = gsap.timeline({
@@ -237,7 +265,7 @@ export default function Home() {
         trigger: '#skills',
         start: 'top top',
         end: '+=150%',
-        scrub: true,
+        scrub: 2,
         pin: true,
       }
     });
@@ -286,7 +314,7 @@ export default function Home() {
         trigger: '#chatbot',
         start: 'top top',
         end: '+=150%',
-        scrub: true,
+        scrub: 2,
         pin: true,
       }
     });
@@ -315,7 +343,7 @@ export default function Home() {
         trigger: '#contact',
         start: 'top top',
         end: '+=100%',
-        scrub: true,
+        scrub: 2,
         pin: true,
       }
     });
@@ -381,6 +409,9 @@ export default function Home() {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -571,97 +602,114 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION 3: SELECTED WORKS (HORIZONTAL SCROLL) */}
-        <section id="projects" className="scroll-section pin-section flex items-center bg-black">
-          <div className="max-w-7xl mx-auto w-full px-6 md:px-12 h-full flex flex-col justify-center relative">
-            <div className="mb-10">
-              <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">// works</span>
-              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mt-1 text-white">SELECTED WORKS.</h2>
-            </div>
+        {/* SECTION 3: SELECTED WORKS (RADIAL WHEEL) */}
+        <RadialScrollGallery
+          id="projects"
+          className="scroll-section pin-section bg-black"
+          scrollDuration={7500}
+          visiblePercentage={45}
+          startTrigger="top top"
+          baseRadius={440}
+          mobileRadius={176}
+          onItemSelect={(index) => setSelectedProject(projectsData[index])}
+        >
+          {(hoveredIndex) =>
+            projectsData.map((project, idx) => {
+              const isActive = idx === hoveredIndex;
+              return (
+                <div
+                  key={idx}
+                  onClick={() => setSelectedProject(project)}
+                  className={`inner-card-rotate w-[390px] h-[220px] sm:w-[450px] sm:h-[250px] bg-[#111111] rounded-xl p-6 flex items-center justify-center text-center text-white shadow-lg border transition-all duration-300 ${isActive
+                    ? 'border-zinc-400 scale-105 shadow-[0_8px_30px_rgba(255,255,255,0.06)]'
+                    : 'border-[#333333] opacity-85 hover:border-zinc-500 hover:opacity-100 hover:scale-[1.02]'
+                    }`}
+                  role="button"
+                >
+                  <h4 className="select-none pointer-events-none line-clamp-3 leading-snug text-xl sm:text-2xl font-bold font-mono">
+                    {project.title}
+                  </h4>
+                </div>
+              );
+            })
+          }
+        </RadialScrollGallery>
 
-            {/* Horizontal Scroll Track */}
-            <div className="w-full relative overflow-visible">
-              <div
-                ref={projectsTrackRef}
-                className="flex gap-6 md:gap-8 items-center w-max pr-[20vw]"
-              >
-                {/* Project 1 */}
-                <article className="project-card w-[320px] md:w-[420px] glass-panel p-6 rounded-2xl border border-border flex flex-col justify-between h-[380px] hover:border-zinc-500 transition-colors shadow-lg">
-                  <div className="space-y-4">
-                    <span className="font-mono text-[10px] text-zinc-500 tracking-wider">01 // MACHINE LEARNING</span>
-                    <h3 className="text-2xl font-bold tracking-tight text-white font-mono">Fraud Detection GNN</h3>
-                    <p className="text-xs md:text-sm text-zinc-400 leading-relaxed">
-                      Graph Neural Networks (GCN, GraphSAGE, GAT) evaluating transaction networks of 200K+ nodes. Beat XGBoost, hitting 0.92 F1 score.
-                    </p>
+        {/* SHADCN DIALOG OVERLAY */}
+        <Dialog open={!!selectedProject} onOpenChange={(open) => !open && setSelectedProject(null)}>
+          <DialogContent
+            className="w-[750px] max-w-[95vw] sm:max-w-[750px] h-auto max-h-[85vh] overflow-y-auto bg-[#1A1A1A] border border-[#444444] text-white rounded-2xl p-6 md:p-8 shadow-2xl focus:outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 duration-200"
+            showCloseButton={false}
+          >
+            {selectedProject && (
+              <div className="space-y-6">
+                {/* Header block */}
+                <div className="border-b border-[#333333] pb-4 flex justify-between items-start gap-4">
+                  <div className="space-y-1.5">
+                    <DialogTitle className="text-2xl md:text-3xl font-extrabold tracking-tight text-white font-mono leading-tight">
+                      {selectedProject.title}
+                    </DialogTitle>
+                    <DialogDescription className="font-mono text-xs text-gray-400 leading-relaxed block">
+                      {selectedProject.context}
+                    </DialogDescription>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">PyTorch</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">GNNExplainer</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">XGBoost</span>
+
+                  {/* Styled close button */}
+                  <DialogClose className="p-1.5 rounded-xl border border-[#333333] hover:border-white/40 hover:bg-[#222222] transition-colors cursor-none shrink-0 outline-none">
+                    <X className="w-4 h-4 text-gray-400 hover:text-white" />
+                  </DialogClose>
+                </div>
+
+                {/* Data Table */}
+                <div className="divide-y divide-[#333333] text-sm">
+                  {/* Row 1: Objective */}
+                  <div className="py-4 grid md:grid-cols-12 gap-4">
+                    <div className="md:col-span-3 font-mono text-xs uppercase tracking-widest text-gray-400">
+                      Objective
+                    </div>
+                    <div className="md:col-span-9 text-gray-200 leading-relaxed">
+                      {selectedProject.objective}
                     </div>
                   </div>
-                </article>
 
-                {/* Project 2 */}
-                <article className="project-card w-[320px] md:w-[420px] glass-panel p-6 rounded-2xl border border-border flex flex-col justify-between h-[380px] hover:border-zinc-500 transition-colors shadow-lg">
-                  <div className="space-y-4">
-                    <span className="font-mono text-[10px] text-zinc-500 tracking-wider">02 // WEB DEVELOPMENT</span>
-                    <h3 className="text-2xl font-bold tracking-tight text-white font-mono">DocuMind AI RAG</h3>
-                    <p className="text-xs md:text-sm text-zinc-400 leading-relaxed">
-                      Enterprise-grade vector document QA search engine with streamed SSE responses, hybrid search, and strict multi-tenant isolate.
-                    </p>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">Next.js</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">FastAPI</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">pgvector</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">PostgreSQL</span>
+                  {/* Row 2: Approach */}
+                  <div className="py-4 grid md:grid-cols-12 gap-4">
+                    <div className="md:col-span-3 font-mono text-xs uppercase tracking-widest text-gray-400">
+                      Approach
+                    </div>
+                    <div className="md:col-span-9">
+                      <ul className="space-y-2 list-none">
+                        {selectedProject.approach.map((item: string, idx: number) => (
+                          <li key={idx} className="flex gap-2.5 items-start text-gray-200 leading-relaxed">
+                            <span className="w-1.5 h-1.5 rounded-full bg-gray-500 shrink-0 mt-2" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                </article>
 
-                {/* Project 3 */}
-                <article className="project-card w-[320px] md:w-[420px] glass-panel p-6 rounded-2xl border border-border flex flex-col justify-between h-[380px] hover:border-zinc-500 transition-colors shadow-lg">
-                  <div className="space-y-4">
-                    <span className="font-mono text-[10px] text-zinc-500 tracking-wider">03 // SIGNAL PROCESSING</span>
-                    <h3 className="text-2xl font-bold tracking-tight text-white font-mono">Signals to Software</h3>
-                    <p className="text-xs md:text-sm text-zinc-400 leading-relaxed">
-                      ECG analysis (arrhythmia beats detection), Fourier-based image recovery and custom Shazam-like audio hashing matching.
-                    </p>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">Python</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">STFT</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">Streamlit</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">SciPy</span>
+                  {/* Row 3: Impact */}
+                  <div className="py-4 grid md:grid-cols-12 gap-4">
+                    <div className="md:col-span-3 font-mono text-xs uppercase tracking-widest text-gray-400">
+                      Impact
+                    </div>
+                    <div className="md:col-span-9 text-white font-semibold leading-relaxed">
+                      {selectedProject.impact}
                     </div>
                   </div>
-                </article>
+                </div>
 
-                {/* Project 4 */}
-                <article className="project-card w-[320px] md:w-[420px] glass-panel p-6 rounded-2xl border border-border flex flex-col justify-between h-[380px] hover:border-zinc-500 transition-colors shadow-lg">
-                  <div className="space-y-4">
-                    <span className="font-mono text-[10px] text-zinc-500 tracking-wider">04 // QUANTITATIVE MARKETING</span>
-                    <h3 className="text-2xl font-bold tracking-tight text-white font-mono">Samsung Reposition</h3>
-                    <p className="text-xs md:text-sm text-zinc-400 leading-relaxed">
-                      Primary consumer survey (60+ target responses), diagnosing user perception gaps, producing targeted lifestyle ad campaigns.
-                    </p>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">MBA631 Project</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">Market Research</span>
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-[#1F2023] border border-border text-zinc-400">Ad Production</span>
-                    </div>
-                  </div>
-                </article>
+                {/* Close controls */}
+                <div className="pt-4 border-t border-[#333333] flex justify-end">
+                  <DialogClose className="px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-gray-400 hover:text-white border border-[#333333] hover:border-white/30 rounded-xl transition-all cursor-none bg-black/20 outline-none">
+                    Close Archive
+                  </DialogClose>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {/* SECTION 4: SKILLS & CORE */}
         <section id="skills" className="scroll-section pin-section flex items-center bg-black">
@@ -670,7 +718,7 @@ export default function Home() {
               <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">// capabilities</span>
               <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">SKILLS & CORE.</h2>
               <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                Representing the intersection of clean UI, mathematics, quantitative modeling, and rigorous leadership on campus.
+                A blend of mathematics, technology, and leadership shaped through hands-on projects, continuous learning, and real world problem solving.
               </p>
 
               {/* Dynamic Orb Container */}
@@ -697,27 +745,27 @@ export default function Home() {
               {/* Skill 1 */}
               <div className="skill-card glass-panel p-5 rounded-xl border border-border hover:border-zinc-500 transition-colors shadow-md">
                 <TrendingUp className="w-5 h-5 text-purple-400 mb-3" />
-                <h3 className="text-lg font-bold tracking-tight text-white font-mono mb-2">ML & Quantitative</h3>
+                <h3 className="text-lg font-bold tracking-tight text-white font-mono mb-2">ML & AI</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  GNNs (GCN, GraphSAGE, GAT), XGBoost, Focal Loss, NumPy, mathematical modeling.
+                  Graph Neural Networks, Fraud Detection, Classification Models, XGBoost, Data Analysis, Quantitative Modeling.
                 </p>
               </div>
 
               {/* Skill 2 */}
               <div className="skill-card glass-panel p-5 rounded-xl border border-border hover:border-zinc-500 transition-colors shadow-md">
                 <Cpu className="w-5 h-5 text-blue-400 mb-3" />
-                <h3 className="text-lg font-bold tracking-tight text-white font-mono mb-2">Full-Stack AI</h3>
+                <h3 className="text-lg font-bold tracking-tight text-white font-mono mb-2">Software & Full stack </h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  Next.js, React, FastAPI, PostgreSQL, pgvector embedding matching, SSE routing.
+                  Python, FastAPI, Next.js, PostgreSQL, RAG Systems, API Development, Authentication & Deployment.
                 </p>
               </div>
 
               {/* Skill 3 */}
               <div className="skill-card glass-panel p-5 rounded-xl border border-border hover:border-zinc-500 transition-colors shadow-md">
                 <Activity className="w-5 h-5 text-emerald-400 mb-3" />
-                <h3 className="text-lg font-bold tracking-tight text-white font-mono mb-2">Signal Processing</h3>
+                <h3 className="text-lg font-bold tracking-tight text-white font-mono mb-2">Robotics & Signal Processing</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  Fourier analysis, spectrogram peak matching, ECG arrhythmia categorization.
+                  mbedded systems, autonomous robotics, sensor integration, algorithmic problem-solving, and hardware-software development.
                 </p>
               </div>
 
@@ -726,7 +774,7 @@ export default function Home() {
                 <Layers className="w-5 h-5 text-pink-400 mb-3" />
                 <h3 className="text-lg font-bold tracking-tight text-white font-mono mb-2">Campus Leadership</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  SPO Placement Coordinating, Y24 Student Senator, Gymkhana & Antaragni logistics.
+                  Student governance, technical mentorship, team leadership, large-scale event operations, and cross-functional coordination.
                 </p>
               </div>
             </div>
@@ -738,7 +786,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto w-full px-6 md:px-12 flex flex-col items-center">
             <div className="text-center mb-8">
               <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">// interactive assistant</span>
-              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mt-1">CHAT WITH KAJLA.AI</h2>
+              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mt-1">ASK ANYTHING ABOUT MY WORK.</h2>
             </div>
 
             {/* Chatbot Interface Container */}
