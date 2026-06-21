@@ -16,10 +16,11 @@ const monoFont = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Manish Kajla | Creative Developer & SPO Placement Coordinator",
+  title: "kajlam.github.io",
   description: "Interactive portfolio of Manish Kajla, a Mathematics & Statistics student at IIT Kanpur and SPO Overall Placement Coordinator. Specializing in machine learning, quantitative finance, and premium interactive web architectures.",
   keywords: ["Manish Kajla", "IIT Kanpur", "SPO Placement Coordinator", "Creative Developer", "Machine Learning", "Quantitative Finance", "Nothing OS Aesthetic", "Portfolio"],
   authors: [{ name: "Manish Kajla" }],
+  icons: "/kkk.jpg",
 };
 
 export const viewport: Viewport = {

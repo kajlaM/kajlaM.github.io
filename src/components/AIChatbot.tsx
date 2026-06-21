@@ -9,6 +9,92 @@ interface Message {
   id: string;
 }
 
+function getLocalFallbackResponse(query: string): string {
+  const lowercaseQuery = query.toLowerCase();
+
+  if (lowercaseQuery.includes('stack') || lowercaseQuery.includes('skills') || lowercaseQuery.includes('languages') || lowercaseQuery.includes('technologies')) {
+    return `### Technical Skills & Stack
+Manish has extensive experience building full-stack applications, quantitative ML tools, and electronics setups:
+* **Languages:** C, C++, Python, JavaScript/TypeScript, HTML, CSS, LaTeX.
+* **Web Architecture:** React, Next.js, FastAPI, Node.js, Tailwind CSS, shadcn/ui.
+* **Database & Vector Search:** PostgreSQL, pgvector.
+* **Machine Learning & Signal Processing:** GNNs (GCN, GraphSAGE, GAT), XGBoost, NumPy, SciPy, Fourier analysis (STFT).
+* **Creative Coding & Motion:** GSAP (ScrollTrigger), Lenis, Canvas API.
+* **Hardware:** Arduino IDE, Tinkercad, robotics prototyping.`;
+  }
+
+  if (lowercaseQuery.includes('fraud') || lowercaseQuery.includes('gnn') || lowercaseQuery.includes('detection') || lowercaseQuery.includes('network') || lowercaseQuery.includes('transaction')) {
+    return `### GNN-Based Fraud Detection System
+Manish developed a graph-based transaction monitoring pipeline for the Electrical Engineering Association at IIT Kanpur:
+* **Graph Modeling:** Modeled transaction data as a relational graph (nodes represent transactions, edges represent monetary flows) to capture complex multi-hop cashflow dependencies.
+* **Deep Learning Models:** Evaluated and compared GCN (Graph Convolutional Networks), GraphSAGE, and GAT (Graph Attention Networks) on a large dataset of over 200,000 nodes.
+* **Imbalance Handling:** Utilized Focal Loss to tackle the severe class imbalance of fraudulent transactions, beating standard machine learning baselines (XGBoost).
+* **Interpretability & Metrics:** Achieved a Macro F1 score of **~0.92** and PR-AUC of **0.92**, with model decisions interpreted using GNNExplainer for transparency.`;
+  }
+
+  if (lowercaseQuery.includes('documind') || lowercaseQuery.includes('rag') || lowercaseQuery.includes('document') || lowercaseQuery.includes('fastapi') || lowercaseQuery.includes('pgvector')) {
+    return `### DocuMind – AI Document RAG Platform
+DocuMind is an enterprise-ready Retrieval-Augmented Generation platform built by Manish for the Association of Computer Activities (ACA) at IIT Kanpur:
+* **Stack:** Next.js (frontend), FastAPI (backend), PostgreSQL with pgvector (vector database).
+* **Advanced Retrieval:** Implemented a hybrid retrieval system combining dense semantic embeddings with sparse BM25 keyword matching for optimal search accuracy.
+* **Production Features:** Supports Server-Sent Events (SSE) for real-time streamed responses, secure Google OAuth login, JWT authorizations, and strict tenant-level data isolation to keep data secure in multi-user deployments.`;
+  }
+
+  if (lowercaseQuery.includes('placement') || lowercaseQuery.includes('spo') || lowercaseQuery.includes('coordinator')) {
+    return `### Overall Placement Coordinator (SPO IIT Kanpur)
+Manish serves as the **Overall Placement Coordinator** at the Students' Placement Office (SPO), IIT Kanpur:
+* **Operations:** Coordinates campus recruitment drives, company communications, and scheduling operations for the entire undergraduate and postgraduate student batches.
+* **Corporate Liaison:** Interfaces with national and international firms across Software Engineering, Quantitative Finance, Analytics, Consulting, and Core Engineering.
+* **Student Preparation:** Leads training sessions, mock interviews, and resume verification processes to prepare student candidates for recruitment.`;
+  }
+
+  if (lowercaseQuery.includes('senator') || lowercaseQuery.includes('senate') || lowercaseQuery.includes('cosha') || lowercaseQuery.includes('hec')) {
+    return `### Student Senator (IIT Kanpur)
+Elected by 1,200+ undergraduate peers, Manish represents the BT/BS Y24 batch in the **Students' Senate**:
+* **Council Representative:** Nominated to the Council of Students for Hostel Affairs (CoSHA), advising on residential policy and coordination.
+* **HEC Guide:** Wrote the comprehensive Hall Executive Committee (HEC) Guide, detailing standard operating procedures and leadership best practices for halls of residence.
+* **Campus Initiatives:** Oversaw centralized scrap collections and coordinated logistics for scrap auctions, optimization resource management on campus.`;
+  }
+
+  if (lowercaseQuery.includes('robotics') || lowercaseQuery.includes('club') || lowercaseQuery.includes('technoxian') || lowercaseQuery.includes('line follower')) {
+    return `### Robotics Club Secretary (IIT Kanpur)
+As Secretary of the **Robotics Club**, Manish manages core technical development and mentorship:
+* **Competitions:** Represented IIT Kanpur at the Technoxian World Robotics Championship in the Line Follower robot category.
+* **Mentorship:** Mentored freshers through hands-on robotics workshops, specifically leading the RoboBreak and RoboDive 2.0 projects. Guided design, hardware assembly, and code implementation of autonomous robots.`;
+  }
+
+  if (lowercaseQuery.includes('gymkhana') || lowercaseQuery.includes('bicycle') || lowercaseQuery.includes('president')) {
+    return `### Students' Gymkhana (President's Office)
+In his role as Secretary in the **Gymkhana President's Office**, Manish worked on several campus-wide initiatives:
+* **Bicycle Auction:** Managed the logistics and process for the campus-wide lost bicycle auction, generating over **4 Lakhs INR** in revenue for the Students' Gymkhana budget.
+* **JEE Open House:** Assisted in organizing orientation seminars and open houses for JEE Advanced qualifiers entering IIT Kanpur.
+* **Events:** Played a key role in coordinating Gymkhana Day 2024-25 and campus Diwali celebrations.`;
+  }
+
+  if (lowercaseQuery.includes('signals') || lowercaseQuery.includes('ecg') || lowercaseQuery.includes('shazam') || lowercaseQuery.includes('arrhythmia') || lowercaseQuery.includes('ee200')) {
+    return `### Signals to Software (EE200 Project)
+Manish built an end-to-end digital signal processing framework for image restoration, ECG analysis, and music matching:
+* **Biomedical DSP:** Implemented spectrogram-based beat-wise ECG analysis to detect arrhythmias with high correlation thresholds.
+* **Audio Fingerprinting:** Engineered a Shazam-inspired audio matching system using spectrogram peak hashing, offset correlation, and custom matching logic.
+* **Interactive Interface:** Packaged all signal processing pipelines (image denoisers, ECG checkers, audio matchers) into a responsive Streamlit dashboard.`;
+  }
+
+  if (lowercaseQuery.includes('contact') || lowercaseQuery.includes('email') || lowercaseQuery.includes('connect')) {
+    return `You can reach out to Manish Kajla directly through the contact details below, or use the form at the bottom of the page:
+* **Email:** [kajla2006manish@gmail.com](mailto:kajla2006manish@gmail.com)
+* **LinkedIn:** [Manish Kajla on LinkedIn](https://linkedin.com/in/Manish-Kajla)
+* **GitHub:** [gtbkajlaM on GitHub](https://github.com/gtbkajlaM)`;
+  }
+
+  return `Hello! I am Manish's personal AI assistant. I can answer questions about his:
+* **Projects:** GNN-based Fraud Detection, DocuMind AI RAG, Shazam Audio Matching, Samsung Repositioning.
+* **Skills:** Python, C++, TS/JS, Next.js, FastAPI, PyTorch (GNNs), pgvector, PostgreSQL, Git.
+* **Positions of Responsibility:** SPO Overall Placement Coordinator, Student Senator, Gymkhana Secretary, Robotics Club Secretary, Antaragni Secretary.
+* **Education:** BS in Mathematics & Statistics from IIT Kanpur.
+
+What would you like to know more about?`;
+}
+
 export default function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -67,6 +153,10 @@ export default function AIChatbot() {
         }),
       });
 
+      if (!res.ok) {
+        throw new Error(`API returned status ${res.status}`);
+      }
+
       const data = await res.json();
 
       setMessages((prev) => [
@@ -78,12 +168,15 @@ export default function AIChatbot() {
         },
       ]);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.warn('API route failed, falling back to client-side response:', error);
+      // Wait briefly to simulate response latency
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      const localResponse = getLocalFallbackResponse(textToSend);
       setMessages((prev) => [
         ...prev,
         {
           role: 'model',
-          text: "I'm having trouble connecting right now. Please try asking again in a few moments.",
+          text: localResponse,
           id: Math.random().toString(),
         },
       ]);
