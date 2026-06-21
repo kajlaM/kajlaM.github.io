@@ -954,7 +954,7 @@ export default function Home() {
           {/* Footer Element */}
           <footer ref={footerRef} className="w-full border-t border-border/10 py-6 text-center bg-black/60 backdrop-blur-md relative z-20">
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-500 font-mono">
-              <p>© 2026 Manish Kajla. Made with Love </p>
+              <p>© 2026 Manish Kajla. Made with Love ❤️</p>
               <div className="flex gap-4">
                 <a href="#hero" className="hover:text-zinc-300 transition-colors cursor-none">Back to top</a>
                 <span>//</span>
